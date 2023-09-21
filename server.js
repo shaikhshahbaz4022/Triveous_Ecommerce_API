@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const { Connection } = require('./config/db');
 const { userRouter } = require('./routes/user.routes');
+const { productRouter } = require('./routes/product.routes');
+const { categoryRouter } = require('./routes/category.routes');
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -10,7 +12,8 @@ const PORT = process.env.PORT || 3001
 
 
 app.use('/user', userRouter)
-
+app.use('/product', productRouter)
+app.use('/category', categoryRouter)
 
 
 app.listen(PORT, async () => {
