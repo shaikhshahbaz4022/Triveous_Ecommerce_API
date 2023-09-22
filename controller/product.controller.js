@@ -57,6 +57,10 @@ const addproduct = async (req, res) => {
         if (!category) {
             return res.status(404).json({ msg: "Category not Found", success: false })
         }
+        const isProductPresent = await productModel.findOne({ title })
+        if (isProductPresent) {
+            return res.status(400).json({ msg: "Cannot Add Multiple Products with Same Title", success: false })
+        }
         const newProduct = new productModel({
             title,
             price,
