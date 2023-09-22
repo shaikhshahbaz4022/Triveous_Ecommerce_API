@@ -7,13 +7,14 @@ const {
     updateProduct,
     deleteProduct
 } = require('../controller/product.controller');
+const { rateLimit } = require('../middleware/ratelimitter');
 const productRouter = express.Router()
 
 //Add New Product
 productRouter.post('/create', addproduct)
 
 // Get All Products
-productRouter.get('/get', getAllProducts)
+productRouter.get('/get', rateLimit, getAllProducts)
 
 //Get Particular Product by ProductID
 productRouter.get('/get/:productID', getProductDetails)
