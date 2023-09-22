@@ -109,6 +109,34 @@ const decrementQuantity = async (req, res) => {
     }
 
 }
+const removeCartItems = async (req, res) => {
+    try {
+        const { productID } = req.params
+        const userID = req.userID
+        const cart = await CartModel.findOne({ userID })
+        if (!cart) {
+            return res.status(404).json({ msg: "Cart not Found" })
+        }
+        const ProductIndex = cart.products.findIndex((item) => item.product.toString() == productID)
+        if (ProductIndex !== -1) {
+            cart.products.splice(ProductIndex, 1)
+            await cart.save()
+            return res.status(200).json({ msg: "Product Removed Succesfully" })
+        }
+        return res.status(404).json({ msg: "Product Not Found in the Cart" })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+            msg: error.message
+        })
+    }
+}
 
-
-module.exports = { addToCart, getAllCartItems, incrementQuantity, decrementQuantity }
+module.exports = {
+    addToCart,
+    getAllCartItems,
+    incrementQuantity,
+    decrementQuantity,
+    removeCartItems
+}
