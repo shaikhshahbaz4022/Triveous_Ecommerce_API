@@ -20,4 +20,13 @@ const userSchema = mongoose.Schema(userObject, {
     timestamps: true,
 })
 const UserModel = mongoose.model('User', userSchema)
-module.exports = { UserModel }
+
+
+// blacklist here 
+
+const blacklistSchema = mongoose.Schema({
+    token: { type: String }
+})
+const BlacklistModel = mongoose.model('Blacklist', blacklistSchema)
+
+module.exports = { UserModel, BlacklistModel }

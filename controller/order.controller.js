@@ -27,7 +27,7 @@ const placeOrder = async (req, res) => {
             }),
             total: totalPrice.toFixed(2),
             orderStatus: {
-                status: "Order Placed",
+                status: "Pending",
                 description: "Order Placed Succesfully"
             }
 
@@ -42,9 +42,67 @@ const placeOrder = async (req, res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
+            error: 'Unable to Place Order,Server Error',
+            msg: error.message
+        })
+    }
+}
+const getorderHistory = async (req, res) => {
+    try {
+        const userID = req.userID
+        const data = await OrderModel.find({ user: userID }).populate('items.product')
+        if (!data) {
+            return res.status(404).json({ msg: "Order Details Not Found", success: false })
+        }
+        return res.status(200).json({ data, success: true })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
             error: 'Internal Server Error',
             msg: error.message
         })
     }
 }
-module.exports = { placeOrder }
+
+const getOrderDetails = async (req, res) => {
+    try {
+        const { orderID } = req.params
+        const userID = req.userID
+        // find order of logedIn user and with order id
+        const OrderPresent = await OrderModel.findOne({ user: userID, _id: orderID }).populate('items.product')
+
+        if (!OrderPresent) {
+            return res.status(404).json({ msg: "Order Not Found" })
+        }
+
+        return res.status(200).json({ data: OrderPresent, success: true })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+            msg: error.message
+        })
+    }
+}
+
+const updateOrderStatus = async (req, res) => {
+    try {
+        const { orderID } = req.params
+        const { status } = req.body
+        const order = await OrderModel.findById(orderID)
+        if (!order) {
+            return res.status(400).json({ msg: "Order Not Found , Please Try Again", success: false })
+        }
+        order.orderStatus.status = status
+        await order.save()
+        return res.status(200).json({ msg: "Status Updated Succesfully", success: true, data: order })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+            msg: error.message
+        })
+    }
+}
+
+module.exports = { placeOrder, getorderHistory, getOrderDetails, updateOrderStatus }

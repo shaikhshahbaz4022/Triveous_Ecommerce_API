@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const orderStatusSchema = new mongoose.Schema({
-    status: { type: String },
+    status: {
+        type: String,
+        enum: ['Pending', 'Shipped', 'Delivered'],
+        default: 'Pending',
+    },
     timestamp: { type: Date, default: Date.now },
     description: { type: String },
 });
@@ -18,7 +22,7 @@ const orderSchema = new mongoose.Schema({
             quantity: { type: Number, required: true },
         },
     ],
-    orderStatus: [orderStatusSchema], // Array of order status objects
+    orderStatus: orderStatusSchema,
     total: { type: Number, required: true },
 });
 

@@ -2,8 +2,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const Private_Key = process.env.Private_Key
-const { UserModel } = require('../models/user.model');
-const { model } = require('mongoose');
+const { UserModel, BlacklistModel } = require('../models/user.model');
+
 const registerUser = async (req, res) => {
     try {
         const { username, email, password } = req.body
@@ -69,4 +69,16 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ msg: error.message })
     }
 }
-module.exports = { registerUser, loginUser }
+
+const logoutUser = async (req, res) => {
+    try {
+        const token = req.headers?.authorization?.split(' ')[1]
+
+        const blacklistToken = new BlacklistModel({ token })
+        await blacklistToken.save()
+        return res.status(200).json({ msg: "Logout Succesfully", success: true })
+    } catch (error) {
+        return res.status(500).json({ msg: error.message })
+    }
+}
+module.exports = { registerUser, loginUser, logoutUser }
