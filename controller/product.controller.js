@@ -75,4 +75,74 @@ const addproduct = async (req, res) => {
         })
     }
 }
-module.exports = { getAllProducts, getProductDetails, addproduct }
+
+// get Product by category ID
+const getCategoryByID = async (req, res) => {
+    try {
+        const { categoryID } = req.params
+        const category = await productModel.find({ category: categoryID }).populate('category')
+        if (!category || category.length == 0) {
+            return res.status(404).json({ msg: "Category Not Found", success: false })
+        }
+        return res.status(200).json({ data: category, success: true })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+            msg: error.message
+        })
+    }
+}
+
+// Update the Product
+const updateProduct = async (req, res) => {
+    try {
+        const { title, price, image, description, availability, categoryID } = req.body
+        const { productID } = req.params
+        const UpdatedValues = {
+            title,
+            price,
+            image,
+            description,
+            availability,
+            category: categoryID
+        }
+        const updatedProduct = await productModel.findByIdAndUpdate(productID, UpdatedValues, { new: true })
+        if (!updatedProduct) {
+            return res.status(404).json({ msg: "Product Not Found", success: false })
+        }
+        return res.status(200).json({ msg: "Product Updated Succesfully", success: true, data: updatedProduct })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+            msg: error.message
+        })
+    }
+}
+
+//delete the product
+const deleteProduct = async (req, res) => {
+    try {
+        const { productID } = req.params
+        const productDelete = await productModel.findByIdAndDelete(productID)
+        if (!productDelete) {
+            return res.status(404).json({ msg: "Product Not Found", success: false })
+        }
+        return res.status(200).json({ msg: "Product Deleted Succesfully", success: true })
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Internal Server Error',
+            msg: error.message
+        })
+    }
+}
+module.exports = {
+    getAllProducts,
+    getProductDetails,
+    addproduct,
+    getCategoryByID,
+    updateProduct,
+    deleteProduct
+}
