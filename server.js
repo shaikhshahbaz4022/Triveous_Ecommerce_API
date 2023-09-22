@@ -6,6 +6,7 @@ const { productRouter } = require('./routes/product.routes');
 const { categoryRouter } = require('./routes/category.routes');
 const { authenticate } = require('./middleware/auth.middleware');
 const { cartRouter } = require('./routes/cart.routes');
+const { orderRouter } = require('./routes/order.routes');
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -18,6 +19,7 @@ app.use('/product', productRouter)
 app.use('/category', categoryRouter)
 app.use(authenticate)
 app.use('/cart', cartRouter)
+app.use('/order', orderRouter)
 
 
 app.listen(PORT, async () => {

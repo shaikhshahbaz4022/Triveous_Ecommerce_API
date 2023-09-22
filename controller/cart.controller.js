@@ -117,7 +117,9 @@ const removeCartItems = async (req, res) => {
         if (!cart) {
             return res.status(404).json({ msg: "Cart not Found" })
         }
+        // Check if the Product is Present or Not
         const ProductIndex = cart.products.findIndex((item) => item.product.toString() == productID)
+        // If Product is Present
         if (ProductIndex !== -1) {
             cart.products.splice(ProductIndex, 1)
             await cart.save()
