@@ -27,7 +27,7 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:8080/",
+                url: "http://localhost:8080/api",
             },
         ],
     },
@@ -42,12 +42,12 @@ app.get('/', (req, res) => {
     res.status(200).json({ msg: "Welcome to Traveous E-commerce Backend API" })
 })
 
-app.use('/user', userRouter)
-app.use('/product', productRouter)
-app.use('/category', categoryRouter)
+app.use('/api/user', userRouter)
+app.use('/api/product', productRouter)
+app.use('/api/category', categoryRouter)
 app.use(authenticate)
-app.use('/cart', cartRouter)
-app.use('/order', orderRouter)
+app.use('/api/cart', cartRouter)
+app.use('/api/order', orderRouter)
 
 
 app.listen(PORT, async () => {
