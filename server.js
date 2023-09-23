@@ -27,7 +27,7 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:8080/api",
+                url: "https://triveous-api.onrender.com/api",
             },
         ],
     },

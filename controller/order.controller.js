@@ -1,5 +1,7 @@
+const { sendEmail } = require("../helpers/nodemailer")
 const { CartModel } = require("../models/cart.model")
 const { OrderModel } = require("../models/order.model")
+const { UserModel } = require("../models/user.model")
 
 const placeOrder = async (req, res) => {
     try {
@@ -37,7 +39,36 @@ const placeOrder = async (req, res) => {
         // making cart empty after order Placed
         cart.products = []
         await cart.save()
+        //for email
+        const userData = await UserModel.findById(userID);
+        // Send an order confirmation email
 
+        const emailData = {
+            email: userData.email,
+            subject: 'Order Confirmation - Triveous Ecommerce',
+            body: `
+          <html>
+            <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+              <h2>Order Confirmation</h2>
+              <p>Dear ${userData.username},</p>
+              <p>Your order has been successfully placed with Triveous Ecommerce. Below are the order details:</p>
+              <ul>
+               <li>status: ${newOrder.orderStatus.status}</li> 
+               <li>Description: ${newOrder.orderStatus.description}</li> 
+               <li>Time: ${newOrder.orderStatus.timestamp.toLocaleTimeString()}</li> 
+             
+               <li><h3>Your Total Amount is <b> ${newOrder.total} </b> </h3></li>
+              </ul>
+              <p>Thank you for shopping with us!</p>
+              <p>Best regards,</p>
+              <p>The Triveous Ecommerce Team</p>
+            </body>
+          </html>
+        `,
+        };
+
+        // Send the order confirmation email
+        sendEmail(emailData);
         return res.status(200).json({ msg: "Order Placed Succesfully", success: true, data: newOrder })
     } catch (error) {
         res.status(500).json({
