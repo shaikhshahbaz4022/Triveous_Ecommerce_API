@@ -50,6 +50,30 @@ Our backend API is built using the following technologies:
 - **Mongoose:** An elegant object modeling library for MongoDB, making it easy to manage database interactions.
 - **JSON Web Tokens (JWT):** Secure user authentication and authorization.
 - **Nodemailer:** A powerful library for sending email notifications.
+- 
+### Installation
+
+1. Clone the repository:
+
+   ```
+   git clone https://github.com/shaikhshahbaz4022/Triveous_Ecommerce_API.git
+   ```
+   
+2. Navigate to the project directory:
+   ```
+   cd Triveous_Ecommerce_API
+   npm-i
+   ```
+   
+3. Install dependencies:
+   ```
+   npm install express mongoose bcrypt jsonwebtoken swagger-jsdoc swagger-ui-express nodemailer nodemon
+   ```
+
+4. Application Start
+   ```
+   npm run server
+   ```
 
 ## Running the Server
 
