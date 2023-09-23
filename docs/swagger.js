@@ -200,7 +200,7 @@
  */
 /* ---------------------------------------->>>>>>><<<<<<<----------------------------------------*/
 
-// ---------------------------------------->>>>>>><<<<<<<----------------------------------------
+
 
 // ------------------------>>> User Routes <<<------------------------
 // Signup
@@ -227,7 +227,7 @@
  *                   success: true
  *                   message: Registration successful
  *                   data:
- *                       name: Traveous
+ *                       username: Traveous
  *                       email: traveous01@gmail.com
  *                       password: $2b$1Fwo6wgApNDpTVQju1RpVux6b5Ql1U/jUI0cc6B1Z7UGZ9VFpmTU
  *                       _id: 64f4c625a9b674bd4bb6bc8e
@@ -351,6 +351,8 @@
  *     get:
  *       summary: Get all products
  *       tags: [Products]
+ *       security:
+ *         - RateLimiter: max-request 10 per Minute
  *       responses:
  *         200:
  *           description: All products retrieved successfully
@@ -380,7 +382,7 @@
 /**
  * @swagger
  * paths:
- *   /product/get/{productId}:
+ *   /product/get/{productID}:
  *     get:
  *       summary: Get product details by product ID
  *       tags: [Products]
@@ -388,7 +390,7 @@
  *         - BearerAuth: []
  *       parameters:
  *         - in: path
- *           name: productId
+ *           name: productID
  *           schema:
  *             type: string
  *           required: true
@@ -425,7 +427,7 @@
 /**
  * @swagger
  * paths:
- *   /product/get/{categoryId}:
+ *   /product/get/{categoryID}:
  *     get:
  *       summary: Get products by category ID
  *       tags: [Products]
@@ -433,7 +435,7 @@
  *         - BearerAuth: []
  *       parameters:
  *         - in: path
- *           name: categoryId
+ *           name: categoryID
  *           schema:
  *             type: string
  *           required: true
@@ -544,7 +546,7 @@
 /**
  * @swagger
  * paths:
- *   /product/update/{productId}:
+ *   /product/update/{productID}:
  *     put:
  *       summary: Update product by product ID
  *       tags: [Products]
@@ -552,7 +554,7 @@
  *          - BearerAuth: []
  *       parameters:
  *         - in: path
- *           name: productId
+ *           name: productID
  *           schema:
  *             type: string
  *           required: true
@@ -619,7 +621,7 @@
 /**
  * @swagger
  * paths:
- *   /product/delete/{productId}:
+ *   /product/delete/{productID}:
  *     delete:
  *       summary: Delete product by product ID
  *       tags: [Products]
@@ -627,7 +629,7 @@
  *          - BearerAuth: []
  *       parameters:
  *         - in: path
- *           name: productId
+ *           name: productID
  *           schema:
  *             type: string
  *           required: true
@@ -641,3 +643,515 @@
  *           description: Internal Server Error or Contact the administrator
  */
 
+
+
+// ------------------------>>> Category Routes <<<------------------------
+
+// # Get all categories
+/**
+ * @swagger
+ * paths:
+ *   /category/get:
+ *     get:
+ *       summary: Get all categories
+ *       tags: [Categories]
+ *       responses:
+ *         '200':
+ *           description: All categories retrieved successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 200
+ *                 success: true
+ *                 message: All categories retrieved successfully
+ *                 data: [
+ *                   {
+ *                     _id: '650c88cde67984b28a81e86c',
+ *                     name: 'new category',
+ *                     createdAt: '2023-09-01T14:23:09.221Z',
+ *                     updatedAt: '2023-09-01T14:23:09.221Z',
+ *                     __v: 0
+ *                   }
+ *                 ]
+ *         '404':
+ *           description: Category Not Found
+ *         '500':
+ *           description: Internal Server Error or Contact the administrator
+ */
+
+// Get category by category ID
+/**
+ * @swagger
+ * paths:
+ *   /category/{categoryID}/particular:
+ *     get:
+ *       summary: Get category by category ID
+ *       tags: [Categories]
+ *       security:
+ *          - BearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: categoryID
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: ID of the category to retrieve
+ *       responses:
+ *         200:
+ *           description: Category retrieved successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 200
+ *                 success: true
+ *                 message: Category retrieved successfully
+ *                 data:
+ *                   {
+ *                     _id: '650c88cde67984b28a81e86c',
+ *                     name: 'new category',
+ *                     createdAt: '2023-09-01T14:23:09.221Z',
+ *                     updatedAt: '2023-09-01T14:23:09.221Z',
+ *                     __v: 0
+ *                   }
+ *         404:
+ *           description: Category not found
+ *         500:
+ *           description: Internal Server Error or Contact the administrator
+*/
+
+// Create a new category
+/**
+ * @swagger
+ * paths:
+ *   /category/create:
+ *     post:
+ *       summary: Create a new category
+ *       tags: [Categories]
+ *       security:
+ *          - BearerAuth: []
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   description: Name of the new category
+ *               required:
+ *                 - name
+ *               example:
+ *                 name: New Category
+ *       responses:
+ *         201:
+ *           description: Category created successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 201
+ *                 success: true
+ *                 message: Category Added successfully
+ *                 data:
+ *                   {
+ *                     _id: '650c88cde67984b28a81e86c',
+ *                     name: 'new category',
+ *                     createdAt: '2023-09-01T14:23:09.221Z',
+ *                     updatedAt: '2023-09-01T14:23:09.221Z',
+ *                     __v: 0
+ *                   }
+ *         500:
+ *           description: Internal Server Error or Contact the administrator
+ */
+
+// Update category by category ID
+/**
+ * @swagger
+ * paths:
+ *   /category/update/{categoryID}:
+ *     put:
+ *       summary: Update category by category ID
+ *       tags: [Categories]
+ *       security:
+ *          - BearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: categoryID
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: ID of the category to update
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   description: New name of the category
+ *               required:
+ *                 - name
+ *               example:
+ *                 name: Updated Category
+ *       responses:
+ *         200:
+ *           description: Category updated successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 200
+ *                 success: true
+ *                 message: Category updated successfully
+ *                 data:
+ *                   {
+ *                     _id: '64f1f47978821805b01ec33d',
+ *                     name: 'update category',
+ *                     createdAt: '2023-09-01T14:23:09.221Z',
+ *                     updatedAt: '2023-09-01T14:23:09.221Z',
+ *                     __v: 0
+ *                   }
+ *         404:
+ *           description: Category not found
+ *         500:
+ *           description: Internal Server Error or Contact the administrator
+ */
+
+// Delete category by category ID
+/**
+ * @swagger
+ * paths:
+ *   /category/delete/{categoryID}:
+ *     delete:
+ *       summary: Delete category by category ID
+ *       tags: [Categories]
+ *       security:
+ *          - BearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: categoryID
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: ID of the category to delete
+ *       responses:
+ *         204:
+ *           description: Category deleted successfully
+ *         404:
+ *           description: Category not found
+ *         500:
+ *           description: Internal Server Error or Contact the administrator
+ */
+
+// ------------------------>>> Cart Routes <<<------------------------
+
+//  Add to Cart
+/**
+ * @swagger
+ * paths:
+ *   /cart/addtocart/{productID}:
+ *     post:
+ *       summary: Add a product to the user's cart
+ *       tags:
+ *         - Cart
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 productID:
+ *                   type: string
+ *                   description: ID of the product to add to the cart
+ *                 quantity:
+ *                   type: integer
+ *                   description: Quantity of the product to add
+ *               required:
+ *                 - productID
+ *                 - quantity
+ *               example:
+ *                 productID: '64f1f47978821805b01ec33d'
+ *                 quantity: 2
+ *       responses:
+ *         '200':
+ *           description: Product Added to cart successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 200
+ *                 success: true
+ *                 message: Product Added to cart successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/Cart'
+ *         
+ *         '400':
+ *           description: Product Already in the Cart
+ *         '404':
+ *           description: Product not found
+ *         '500':
+ *           description: Internal Server Error or Contact the administrator
+ */ 
+
+//  View Cart
+/**
+ * @swagger
+ * paths:
+ *  /cart/get:
+ *    get:
+ *      summary: View the user's cart
+ *      tags:
+ *        - Cart
+ *      responses:
+ *        '200':
+ *          description: Cart retrieved successfully
+ *          content:
+ *            application/json:
+ *              example:
+ *                status: 200
+ *                success: true
+ *                message: Cart retrieved successfully
+ *                data:
+ *                  $ref: '#/components/schemas/Cart'
+ *        '404':
+ *          description: Your Cart is Empty!
+ *        '500':
+ *          description: Internal Server Error or Contact the administrator
+ */ 
+
+
+
+/**
+ * @swagger
+ * /cart/increment/{productID}:
+ *   post:
+ *     summary: Increase the quantity of a product in the cart
+ *     description: Increase the quantity of a product in the user's cart.
+ *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []  
+ *     parameters:
+ *       - in: path
+ *         name: productID
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to increase the quantity.
+ *     responses:
+ *       200:
+ *         description: Product quantity increased.
+ *       404:
+ *         description: Product not found in cart.
+ *       500:
+ *         description: Something went wrong.
+ *       401:
+ *         description: Unauthorized - JWT token required.
+ */
+
+/**
+ * @swagger
+ * /cart/decrement/{productID}:
+ *   post:
+ *     summary: Decrease the quantity of a product in the cart
+ *     description: Decrease the quantity of a product in the user's cart.
+ *     tags: [Cart]
+ *     security:
+ *       - bearerAuth: []  # Use this to enable JWT authentication
+ *     parameters:
+ *       - in: path
+ *         name: productID
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product to decrease the quantity.
+ *     responses:
+ *       200:
+ *         description: Product quantity updated.
+ *       404:
+ *         description: Product not found in cart.
+ *       500:
+ *         description: Something went wrong.
+ *       401:
+ *         description: Unauthorized - JWT token required.
+ */
+
+
+// Remove from Cart
+/**
+ * @swagger
+ * paths:
+ *  /cart/delete/{productID}:
+ *    delete:
+ *      summary: Remove items from the user's cart
+ *      tags:
+ *        - Cart
+ *      parameters:
+ *        - in: path
+ *          name: productID
+ *          schema:
+ *            type: string
+ *          required: true
+ *          description: ID of the product to remove from the cart
+ *      responses:
+ *        '200':
+ *          description: Product Removed Succesfully
+ *          content:
+ *            application/json:
+ *              example:
+ *                status: 200
+ *                success: true
+ *                message: Product Removed Succesfully
+ *                data:
+ *                  $ref: '#/components/schemas/Cart'
+ *        '404':
+ *          description: Cart not found
+ *        '500':
+ *          description: Internal Server Error or Contact the administrator
+ */
+
+
+// ------------------------>>> Order Routes <<<------------------------
+
+
+// Place an order
+/**
+ * @swagger
+ * paths:
+ *   /order/place-order:
+ *     post:
+ *       summary: Place an order
+ *       tags: [Orders]
+ *       security:
+ *         - BearerAuth: []
+ *       responses:
+ *         '201':
+ *           description: Order placed successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 201
+ *                 success: true
+ *                 message: Order placed successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/Order'
+ *         '400':
+ *           description: Cannot Place Order,cart is Empty (e.g., empty cart)
+ *         '500':
+ *           description: Internal Server Error or Contact the administrator
+ */
+
+
+// Get order history for an authenticated user
+/**
+ * @swagger
+ * paths:
+ *   /order/order-history:
+ *     get:
+ *       summary: Get order history for an authenticated user
+ *       tags: [Orders]
+ *       security:
+ *         - BearerAuth: []
+ *       responses:
+ *         '200':
+ *           description: Order history retrieved successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 200
+ *                 success: true
+ *                 message: Order history retrieved successfully
+ *                 data:
+ *                   - $ref: '#/components/schemas/Order'
+ *         '404':
+ *           description: Order Details Not Found
+ *         '500':
+ *           description: Internal Server Error or Contact the administrator
+ */
+
+
+// Get order details by order ID
+/**
+ * @swagger
+ * paths:
+ *   /order/order-details/{orderID}:
+ *     get:
+ *       summary: Get order details by order ID
+ *       tags:
+ *         - Orders
+ *       security:
+ *         - BearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: orderId
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: ID of the order to retrieve
+ *       responses:
+ *         '200':
+ *           description: Order details retrieved successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 200
+ *                 success: true
+ *                 message: Order details retrieved successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/Order'
+ *         '404':
+ *           description: Order not found
+ *         '500':
+ *           description: Internal Server Error or Contact the administrator
+ */ 
+
+
+// Update the order status by order ID
+/**
+ * @swagger
+ * paths:
+ *   /order/update/{orderID}:
+ *     put:
+ *       summary: Update the order status by order ID
+ *       tags:
+ *         - Orders
+ *       security:
+ *         - BearerAuth: []
+ *       parameters:
+ *         - in: path
+ *           name: orderId
+ *           schema:
+ *             type: string
+ *           required: true
+ *           description: ID of the order to update
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   description: New status of the order
+ *               required:
+ *                 - status
+ *               example:
+ *                 status: 'Shipped'
+ *       responses:
+ *         '200':
+ *           description: Order status updated successfully
+ *           content:
+ *             application/json:
+ *               example:
+ *                 status: 200
+ *                 success: true
+ *                 message: Order status updated successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/Order'
+ *         '404':
+ *           description: Order not found
+ *         '500':
+ *           description: Internal Server Error or Contact the administrator
+ */ 
+// ------------------------------------------------->>>>>>>The End<<<<<<<----------------------------------------------------
