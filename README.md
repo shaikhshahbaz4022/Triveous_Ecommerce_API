@@ -74,11 +74,11 @@ For detailed information on how to use our API, please refer to the [API documen
 
 ## Swagger API Docs
 
-You can also access the Swagger API documentation [here](http://54.82.202.67:8080/docs/).
+You can also access the Swagger API documentation [here](https://triveous-api.onrender.com/docs/).
 
 ## Database Schema
 
-To understand the data structure of our MongoDB database, explore the [Database Schema](docs/Database_Schema.png).
+To understand the data structure of our MongoDB database, explore the [Database Schema](docs/EntityRelationDiag.png).
 
 ## Folder Structure
 

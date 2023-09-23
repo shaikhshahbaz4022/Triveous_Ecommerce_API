@@ -39,7 +39,7 @@ app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
 /* ----->>>>>> Home Route <<<<<<------*/
 
 app.get('/', (req, res) => {
-    res.status(200).json({ msg: "Welcome to Traveous E-commerce Backend API" })
+    res.status(200).send(`<h1>Welcome to Traveous E-commerce Backend API</h1>`)
 })
 
 app.use('/api/user', userRouter)
