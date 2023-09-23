@@ -86,9 +86,9 @@ We maintain a clean and organized folder structure for easy navigation and devel
 
 ## Snapshorts Documentation
 
-![Alt text](<Screenshot 2023-09-23 132142.png>)
-![Alt text](<Screenshot 2023-09-23 132158.png>)
-![Alt text](<Screenshot 2023-09-23 132211.png>)
-![Alt text](<Screenshot 2023-09-23 132220.png>)
+![Alt text](docs/assets/Screenshot%202023-09-23%20132142.png)
+![Alt text](docs/assets/Screenshot%202023-09-23%20132158.png)
+![Alt text](docs/assets/Screenshot%202023-09-23%20132211.png)
+![Alt text](docs/assets/Screenshot%202023-09-23%20132220.png)
 
 Made with ❤️ by the Triveous Ecommerce Team
